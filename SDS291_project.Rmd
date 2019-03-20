@@ -1,10 +1,28 @@
 ---
 title: "SDS 291 Project"
-author: "Isabel Gomez"
-date: "March 19, 2019"
+author: "Isabel Gomez, Ester Zhao, Karina Lieb"
+date: "March 20, 2019"
 output: html_document
 ---
 
+```{r}
+#Load packages
+# knitr settings to control how R chunks work and how the pdf is compiled when knit.
+library(knitr)
+require(knitr)
+opts_chunk$set(
+  tidy=TRUE,                     # display code as typed
+  size="small",                   # slightly smaller font for code
+  tidy.opts=list(width.cutoff=65), # wrap text and long comments
+  fig.width=7, fig.height=5           #figure size
+)
+require(mosaic)
+require(magrittr)
+require(tidyverse)
+```
+
+
+```{r}
 #First load ipums
 library(ipumsr)
 
@@ -15,14 +33,55 @@ nhis_data <- read_ipums_micro(nhis_ddi, verbose = FALSE)
 View(nhis_data)
 
 #Finding the variables that have a label
-usa_data %>%
+nhis_data %>%
   select_if(is.labelled)
 
+# Convert the labels to factors (and drop the unused levels)
+nhis_data<-nhis_data%>%
+  mutate(FSRAWSCORE = droplevels(as_factor(FSRAWSCORE)))
 
-#Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 3 levels:Food Secure (0-2), Low Food Security(3-5), Very Low Security Food Secure(6-10). 
+```
+
+#Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 3 levels: Secure (0-2), Low Food Security(3-5), Very Low Food Security (6-10). 
+
+```{r}
+#FSRAWSCORE Codes: 
+nhis_data<-nhis_data %>%
+  mutate(FSRAWSCORE_cat==cut(x, breaks=c(-Inf, 3, 6, Inf),
+                             labels=c("Secure", "Low Food Security", "Very Low Food Security"),
+                             right = TRUE))
+
+
+#example from online
+# res <- df %>% mutate(category=cut(a, breaks=c(-Inf, 0.5, 0.6, Inf), labels=c("low","middle","high")))
+```
+
+
+### Exercise 2: Recode newchild_factor so that it is a binary variable: yes vs. no.
+
+```{r}
+usa_data<-usa_data %>%
+  mutate(newchild_factor=if_else(newchild_factor=="Yes","Yes","No"))
+```
+
+
 
 #Filter GOTSTAMPFAM to only include those who answered "Yes" Filter for those only who received SNAP benefits
+```{r}
+#GOTSTAMPFAM Codes: 10 = NO, 21 = Yes in last calendar year, 22 = Yes in last month.
+#This will remove all observations where GOTSTAMPFAM does not equal 21 or 22
+nhis_data<-nhis_data %>%
+  filter(GOTSTAMPFAM==21 | GOTSTAMPFAM==22)
 
-#Mutate METRO to be a binary indicator variable called URBAN that will have a 1 if a househould if the household is located in urban area and is 0 otherwise. Steps found below
+```
 
-#Combine "not in Central City and MSA" and "in Central City" to be categorized as urban (1) and "not in MSA" to be categorized as rural (0)
+
+#Mutate METRO to be a binary indicator variable called URBAN that will have a 1 if a househould if the household is located in urban area and is 0 otherwise. Combine "not in Central City and MSA" and "in Central City" to be categorized as urban (1) and "not in MSA" to be categorized as rural (0)
+
+```{r}
+#METRO Codes: 010 = MSA In Central City, 020 = MSM Not in Central City. All else are non-urban locations. 
+nhis_data<-nhis_data %>%
+  mutate(URBAN=if_else(METRO %in% c(010, 020), 1, 0))
+```
+
+
