@@ -1,0 +1,19 @@
+---
+title: "SDS 291 Project"
+author: "Isabel Gomez"
+date: "March 19, 2019"
+output: html_document
+---
+
+#First load ipums
+library(ipumsr)
+
+# Note that you can pass in the loaded DDI into the library(read_ipums_micro()`
+nhis_ddi <- read_ipums_ddi("nhis_00003.xml")
+
+nhis_data <- read_ipums_micro(nhis_ddi, verbose = FALSE)
+View(nhis_data)
+
+#Finding the variables that have a label
+usa_data %>%
+  select_if(is.labelled)
