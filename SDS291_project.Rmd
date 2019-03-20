@@ -17,3 +17,12 @@ View(nhis_data)
 #Finding the variables that have a label
 usa_data %>%
   select_if(is.labelled)
+
+
+#Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 3 levels:Food Secure (0-2), Low Food Security(3-5), Very Low Security Food Secure(6-10). 
+
+#Filter GOTSTAMPFAM to only include those who answered "Yes" Filter for those only who received SNAP benefits
+
+#Mutate METRO to be a binary indicator variable called URBAN that will have a 1 if a househould if the household is located in urban area and is 0 otherwise. Steps found below
+
+#Combine "not in Central City and MSA" and "in Central City" to be categorized as urban (1) and "not in MSA" to be categorized as rural (0)
