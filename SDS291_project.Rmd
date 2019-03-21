@@ -40,7 +40,9 @@ nhis_data %>%
 
 # Convert the labels to factors (and drop the unused levels)
 nhis_data<-nhis_data%>%
-  mutate(FSRAWSCORE = droplevels(as_factor(FSRAWSCORE)))
+  mutate(FSRAWSCORE = droplevels(as_factor(FSRAWSCORE)),
+         REGION = droplevels(as_factor(REGION)),
+         RACE = droplevels(as_factor(RACEBR)))
 
 ```
 
@@ -78,6 +80,51 @@ nhis_data<-nhis_data %>%
   mutate(URBAN=if_else(METRO %in% c(010, 020), 1, 0))
 ```
 
+
+```{r}
+#---------- WRANGLE CONFOUNDING VARIABLES -------------
+
+#REGION: a categorical variable with string labels as values.
+
+#AGE: A numerical variable indicating age of the individual surveyed.
+
+#EDUC: Create a categorical variable EDUCATION, with three levels. Did not graduate high school (0), high school graduate or GED (1), vocational degree (2), bachelor's degree/higher (3).
+nhis_data<-nhis_data %>%
+  mutate(EDUCATION=if_else(EDUC %in% c(500, 601, 602, 603), 3, #bachelor's or higher
+                           if_else(EDUC %in% c(402, 403), 2, #vocational degree
+                                   if_else(EDUC %in% c(301, 302, 401), 1, 0)))) #high school or GED. Includes college drop outs.
+                                  #else, set to 0 (did not complete high school)
+  
+
+
+
+#RACE: Has been set to labels. Filter out those who chose not to answer race.
+nhis_data<-nhis_data %>%
+  filter(RACE != "Unknown-refused" | RACE != "Unknown-not ascertained" | RACE != "Unknown-don't know") %>%
+  
+  
+  #INCOME: How to handle? discuss in class to decide levels.
+  
+  
+  #HEALTH: Make into a binary inducator variable Health_Issues, which has a value of (0) if the individual is healthy (Code 1-3), and a value of (1) if the individual has fair to poor health (Code 4-5). Give a patch fix value of (2) to all other values for now.
+  mutate(Health_Issues=if_else(HEALTH %in% c(1,2,3), 0, #0 for healthy
+                               if_else(HEALTH %in% c(4,5), 1, 2))) #1 for poor health, 2 for all else 
+  
+  #NCHILD: already contains total number of children. Cap at 9 total.
+  
+  #FAMOLDNO: number of persons in the household aged 65 or older. Data collection cap at 5 total.
+  
+  #NUMPREC: number of individuals in the household total. "A 3 digit numeric value".
+
+  
+  
+
+
+
+
+
+       
+```
 
 <!-- --------------------------------------------------- -->
 
