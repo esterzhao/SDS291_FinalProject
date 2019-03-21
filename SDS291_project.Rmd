@@ -62,9 +62,12 @@ nhis_data<-nhis_data %>%
 
 #FSRAWSCORE Codes: 
 nhis_data<-nhis_data %>%
-  mutate(FSWRAWSCORE==cut(x, breaks=c(-Inf, 3, 6, Inf),
+  mutate(FSRAWSCORE==cut(, breaks=c(-Inf, 3, 6, Inf),
                              labels=c("Secure", "Low Food Security", "Very Low Food Security"),
                              right = TRUE))
+
+
+#help how does this work
 
 
 #example from online
@@ -115,14 +118,6 @@ nhis_data<-nhis_data %>%
   #FAMOLDNO: number of persons in the household aged 65 or older. Data collection cap at 5 total.
   
   #NUMPREC: number of individuals in the household total. "A 3 digit numeric value".
-
-  
-  
-
-
-
-
-
        
 ```
 
