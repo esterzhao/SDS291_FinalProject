@@ -2,15 +2,15 @@
 title: "SDS 291 Data Appendix"
 author: "Isabel Gomez, Ester Zhao, Karina Lieb"
 date: "March 20, 2019"
-output: html_document
+output: pdf_document
 ---
 
-```{r}
+```{r, echo=FALSE, results='hide',message=FALSE}
 #Load packages
 # knitr settings to control how R chunks work and how the pdf is compiled when knit.
 # install.packages("readr")
-library(readr)
-library(mosaic)
+require(readr)
+require(mosaic)
 require(knitr)
 opts_chunk$set(
   tidy=TRUE,                     # display code as typed
@@ -22,8 +22,8 @@ require(magrittr)
 require(tidyverse)
 ```
 
-###Data wrangling
-```{r}
+#Data wrangling
+```{r, message = FALSE, results='hide'}
 #First load ipums
 library(ipumsr)
 
@@ -31,7 +31,6 @@ library(ipumsr)
 nhis_ddi <- read_ipums_ddi("nhis_00002.xml")
 
 nhis_data <- read_ipums_micro(nhis_ddi, verbose = FALSE)
-View(nhis_data)
 
 #Finding the variables that have a label
 nhis_data %>%
@@ -49,7 +48,7 @@ nhis_data <- nhis_data %>%
 
 ```
 
-```{r}
+```{r, message=FALSE}
 #Filter GOTSTAMPFAM to only include those who answered "Yes" Filter for those only who received SNAP benefits
 
 #GOTSTAMPFAM Codes: 10 = NO, 21 = Yes in last calendar year, 22 = Yes in last month.
@@ -60,20 +59,18 @@ nhis_data<-nhis_data %>%
 ```
 
 
-```{r}
+```{r, message=FALSE}
 #Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 3 levels: Secure (0-2), Low Food Security(3-5), Very Low Food Security (6-10). 
 
 #FSRAWSCORE Codes: 
 
 nhis_data<- nhis_data %>%
-  mutate(Food_Security = if_else(FSRAWSCORE %in% c(0,1,2), "Secure",
-                            if_else(FSRAWSCORE %in% c(3,4,5), "Low Food Security ", 
-                                    "Very Low Food Security"))) %>%
+  mutate(Food_Security = if_else(FSRAWSCORE %in% c(0,1,2), "Secure", "Food Insecure")) %>%
   mutate(FOOD_SECURITY=as.factor(Food_Security))
 ```
 
 
-```{r}
+```{r, message=FALSE}
 #---------- WRANGLE CONFOUNDING VARIABLES -------------
 
 #REGION: a categorical variable with string labels as values.
@@ -87,8 +84,6 @@ nhis_data<-nhis_data %>%
                                    if_else(EDUC %in% c(301, 302, 401), 1, 0)))) %>%
     mutate(EDUCATION=as.factor(education))#high school or GED. Includes college drop outs.
                                   #else, set to 0 (did not complete high school)
-  
-
 
 
 #RACE: Has been set to labels. Filter out those who chose not to answer race.
@@ -130,7 +125,7 @@ nhis_data <- nhis_data %>%
 
 
 #Select only the variables we'll need for analysis 
-```{r}
+```{r, message=FALSE}
 nhis_data <- nhis_data %>%
   select(AGE, FOOD_SECURITY, NCHILD, NUMPREC, FAMOLDNO, HEALTH_ISSUES, RACE, EDUCATION, FAM_INCOME, REGION, RECEIVED_STAMPS)
 ```
@@ -139,15 +134,14 @@ nhis_data <- nhis_data %>%
 <!-- --------------------------------------------------- -->
 
 #Structure and Names
-
-```{r}
+```{r, message=FALSE}
 str(nhis_data, give.attr = FALSE)
 ```
 
 There are 11 variables in the data we are using, and 10926 observations. The variables are:
 
 1. `AGE` states the surveyed individual's age (number)
-2. `FOOD_SECURITY` states the household's food security as a categorical variable with 3 levels, "Very Food Insecure", "Food Insecure", and "Secure".
+2. `FOOD_SECURITY` states the household's food security as a binary indicator variable with two levels, "Secure", and "Insecure".
 3. `NCHILD` states how many children have been born to the household in the last year (categorical).
 4. `NUMPREC` states how many individuals total live in the household (categorical).
 5. `FAMOLDNO` states how many individuals over the age of 65 are within the household. (number)
@@ -170,7 +164,7 @@ tally(~FOOD_SECURITY, data = nhis_data)
 
 ```
 
-We see here that from families that participated in SNAP, about 13.51% reported having Very Low Food Security, 16.13% reported having Low Food Security, and 70.36% reported feeling Food Secure. This seems fairly in line with our expectations, as the majority of families that particpated in SNAP are reporting that the system worked well for them, while a percentage reported a lower success rate.
+We see here that from families that participated in SNAP, about 13.51% reported having Very Low Food Security, 29.64% reported having Low Food Security, and 70.36% reported feeling Food Secure. This seems fairly in line with our expectations, as the majority of families that particpated in SNAP are reporting that the system worked well for them, while a percentage reported a lower success rate.
 
 ```{r}
 tally(~NCHILD, data=nhis_data)
