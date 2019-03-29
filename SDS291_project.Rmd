@@ -187,6 +187,25 @@ favstats(~NUMPREC, data=nhis_data)
 Because this variable can be interpreted as both numeric and categorical, we will do both the favstats() and tally() to analyze the distribution. We would predict that most households had a total of about 3-5 people living in them. In the favstats result, we see that the mean is 3.92, which is in line with out expectation. We can see from the tally results that households with 3-5 people in them make up 55.4% of the surveyed population.
 
 ```{r}
+tally(~FAMOLDNO, data=nhis_data)
+```
+
+This distribution of number of elderly in the household is expected. We aren’t expecting a strong correlation between the number of elderly people in a household and food stamp participation, so we would expect this distribution to reflect the overall population of elderly people in the US. About 80% of houses do not have an elderly member, which makes sense because most Americans are not over the age of 65. There are no unusual values. 
+
+```{r}
+tally(~HEALTH_ISSUES, data = nhis_data)
+```
+
+We predict that being a recipient of food stamps may be correlated with health issues, because food insecurity and lower income are correlated with lower health. So, we predicted more people in this group will have issues than in the general population, but the majority of people will not have health issues. Our expectation is reflected in the data: about 80% of those on food stamps are healthy. 
+
+```{r}
+tally(~RACE, data=nhis_data)
+```
+These data show that most respondents are white (~58%), which is expected as most Americans are white.We would also expect people of color to be over-represented in the food stamp recipient group, because POC (excluding asian americans) tend to have lower income than white people. This holds true, as about 75% of americans are white overall, and they represent only about 58% of those that receive food stamps. The 8 levels provided for this variable we find a little strange. There is no category for hispanic/latinx people, as well as overall asian people (only options provided are chinese, filipino, or asian indian, which are nationalities rather than race categories). If these were the options given to respondents, this could have caused some confusion in their answers. 
+
+
+
+```{r}
 tally(~EDUCATION, data = nhis_data)
 ```
 The number of people who did not complete or only completed high school is 89.66% of the surveyed population. This is as expected as it is probably difficult for individuals with only a high school degree or less to get high paying job, meaning they may need the financial support of food stamps to survive. 
@@ -205,6 +224,3 @@ The number of families receiving food stamps varies by region which is what we e
 tally(~RECEIVED_STAMPS, data =nhis_data)
 ```
 All families in this survey population received food stamps which is what we expected as we filtered out for individuals who only received food stamps.
-
-
-
