@@ -115,7 +115,7 @@ nhis_data <- nhis_data %>%
 
    
   
-  #NCHILD: already contains total number of children. Cap at 9 total. The max amount of children in the data is 7. Could we also treat this as numeric.
+  #NCHILD: already contains total number of children. Cap at 9 total. The max amount of children in the data is 7.
  
   
   #FAMOLDNO: number of persons in the household aged 65 or older. Data collection cap at 5 total. The max amount elders in our data is just 3. 
@@ -148,8 +148,8 @@ There are 11 variables in the data we are using, and 10926 observations. The var
 
 1. `AGE` states the surveyed individual's age (number)
 2. `FOOD_SECURITY` states the household's food security as a categorical variable with 3 levels, "Very Food Insecure", "Food Insecure", and "Secure".
-3. `NCHILD` states how many children have been born to the household in the last year (number)
-4. `NUMPREC` states how many individuals total live in the household (number)
+3. `NCHILD` states how many children have been born to the household in the last year (categorical).
+4. `NUMPREC` states how many individuals total live in the household (categorical).
 5. `FAMOLDNO` states how many individuals over the age of 65 are within the household. (number)
 6. `HEALTH_ISSUES` is a binary indicator variable that states whether an individual is healthy (HEALTH_ISSUES=0), or has health issues (HEALTH_ISSUES=1).
 7. `RACE` states the race of the individual surveyed as a categorical variable with 8 levels.
@@ -171,6 +171,20 @@ tally(~FOOD_SECURITY, data = nhis_data)
 ```
 
 We see here that from families that participated in SNAP, about 13.51% reported having Very Low Food Security, 16.13% reported having Low Food Security, and 70.36% reported feeling Food Secure. This seems fairly in line with our expectations, as the majority of families that particpated in SNAP are reporting that the system worked well for them, while a percentage reported a lower success rate.
+
+```{r}
+tally(~NCHILD, data=nhis_data)
+favstats(~NCHILD, data=nhis_data)
+```
+
+Because this variable can be interpreted as both numeric and categorical, we will do both the favstats() and tally() to analyze the distribution. We would predict that the majority of families would have only had one or two children added to the household in the last year. We can see from the favstats result that the mean value for children born in the last year is 1.67, which supports our expectation. The tally also supports that, showing that for those families that it applied to, 66.7% had one child in the last year.
+
+```{r}
+tally(~NUMPREC, data=nhis_data)
+favstats(~NUMPREC, data=nhis_data)
+```
+
+Because this variable can be interpreted as both numeric and categorical, we will do both the favstats() and tally() to analyze the distribution. We would predict that most households had a total of about 3-5 people living in them. In the favstats result, we see that the mean is 3.92, which is in line with out expectation. We can see from the tally results that households with 3-5 people in them make up 55.4% of the surveyed population.
 
 ```{r}
 tally(~EDUCATION, data = nhis_data)
