@@ -65,7 +65,7 @@ nhis_data<-nhis_data %>%
 #FSRAWSCORE Codes: 
 
 nhis_data<- nhis_data %>%
-  mutate(Food_Security = if_else(FSRAWSCORE %in% c(0,1,2), "Secure", "Food Insecure")) %>%
+  mutate(Food_Security = if_else(FSRAWSCORE %in% c(0,1,2), "Secure", "Food Insecure")) %>% 
   mutate(FOOD_SECURITY=as.factor(Food_Security))
 ```
 
