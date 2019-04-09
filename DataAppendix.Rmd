@@ -218,3 +218,25 @@ The number of families receiving food stamps varies by region which is what we e
 tally(~RECEIVED_STAMPS, data =nhis_data)
 ```
 All families in this survey population received food stamps which is what we expected as we filtered out for individuals who only received food stamps.
+
+Hypothesis Testing:
+
+Our primary hypothesis is that of those family participating in the food stamps, they will all have the same level of food security adjusting for all other confounding variables. In other words, that there is no difference between regions and food security level. 
+
+$H_0: \beta_1 =0$
+$H_A: \beta_1\neq0$
+ 
+
+
+##Visualize our data
+```{r}
+qplot(x=REGION,y=FOOD_SECURITY,data=nhis_data)+geom_jitter()+coord_flip() + labs( x = "Region", y = "Food Security", title = "Food Security Levels among SNAP Participants in the US")
+```
+##Does this data pass our assumptions?
+Since the response variable for this study is binary, the logistic equation is automatically linear. Furthermore, the data was collected all across the United States through a survey, therefore this passes the random assumption. Finally, since the individuals who were surveyed did not know each other, the independence assumption was also passed as they would not have influenced each other. 
+
+##Fit a logistic model 
+```{r}
+m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
+summary(m1)
+```
