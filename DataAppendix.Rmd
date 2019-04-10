@@ -227,7 +227,6 @@ $H_0: \beta_1 =0$
 $H_A: \beta_1\neq0$
  
 
-
 ##Visualize our data
 ```{r}
 qplot(x=REGION,y=FOOD_SECURITY,data=nhis_data)+geom_jitter()+coord_flip() + labs( x = "Region", y = "Food Security", title = "Food Security Levels among SNAP Participants in the US")
@@ -237,6 +236,9 @@ Since the response variable for this study is binary, the logistic equation is a
 
 ##Fit a logistic model 
 ```{r}
-m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
+#m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
+m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
 summary(m1)
 ```
+
+Model: $FoodSecurity = 0.849Northeast - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
