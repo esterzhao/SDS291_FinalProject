@@ -127,7 +127,7 @@ nhis_data <- nhis_data %>%
 #Select only the variables we'll need for analysis 
 ```{r, message=FALSE}
 nhis_data <- nhis_data %>%
-  select(AGE, FOOD_SECURITY, NCHILD, NUMPREC, FAMOLDNO, HEALTH_ISSUES, RACE, EDUCATION, FAM_INCOME, REGION, RECEIVED_STAMPS)
+  select(NHISPID, AGE, FOOD_SECURITY, NCHILD, NUMPREC, FAMOLDNO, HEALTH_ISSUES, RACE, EDUCATION, FAM_INCOME, REGION, RECEIVED_STAMPS)
 ```
 
 
@@ -238,6 +238,23 @@ $H_0: \beta_1 =0$
 $H_A: \beta_1\neq0$
 
 ###Assumptions for logistic regression
+
+```{r}
+
+nhis_data2 <- nhis_data %>%
+  distinct(NHISPID, .keep_all = TRUE)
+
+nhis_data2 <- nhis_data2 %>% 
+  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Secure", 0, 1)) %>%
+  group_by(REGION) %>%
+  mutate(binned.y = mean(FOOD_SECURE_NUM))
+
+ggplot(nhis_data2, aes(x = REGION, y = logit(binned.y))) + 
+  geom_point()
+
+```
+
+
 Since the response variable for this study is binary, the logistic equation is automatically linear. Furthermore, the data was collected all across the United States through a survey, therefore this passes the random assumption. Finally, since the individuals who were surveyed did not know each other, the independence assumption was also passed as they would not have influenced each other. 
 
 ###Fitting a logistic model 
@@ -247,7 +264,7 @@ m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
 summary(m1)
 ```
 
-Model: $FoodSecurity = 0.849Northeast - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
+Model: $FoodSecurity = 0.849 - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
 
 ##Visualization of secondary hypothesis (food security by household size)
 
