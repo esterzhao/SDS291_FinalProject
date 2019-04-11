@@ -260,7 +260,7 @@ ggplot(data=bar_data, aes(x=REGION, y=pct_secure)) +
 
 ###Hypothesis Testing:
 
-Our primary hypothesis is that of families participating in SNAP, level of food security will not vary by region, adjusting for other confounding variables. 
+Our primary hypothesis is that of families participating in SNAP, level of food security will  vary  for at least one region, adjusting for other confounding variables. 
 
 $H_0: \beta_1 =0$
 $H_A: \beta_1\neq0$
@@ -279,7 +279,7 @@ nhis_data2 <- nhis_data2 %>%
 
 ggplot(nhis_data2, aes(x = REGION, y = logit(binned.y))) + 
   geom_point()
-#linearity doesnt really apply because the x is categorical (no specific order to regions). we would not expect it to be linear because the regions do not have a linear pattern
+#linearity doesnt really apply because the x is categorical (no specific order to regions). we would not expect it to be linear becauexpse the regions do not have a linear pattern
 
 #independence is violated. choose a household head. individual covariants apply to whole household. use person #1 as representative. 
 
@@ -297,6 +297,8 @@ summary(m1)
 ```
 
 Model: $FoodSecurity = 0.849 - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
+
+According to this model, it is 1% less likely that you will be food secure in the North Central/Midwest region than in the Northeast region.  
 
 ##Visualization of secondary hypothesis (food security by household size)
 
