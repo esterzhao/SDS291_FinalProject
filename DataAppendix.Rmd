@@ -195,7 +195,7 @@ We predict that being a recipient of food stamps may be correlated with health i
 ```{r}
 tally(~RACE, data=nhis_data)
 ```
-These data show that most respondents are white (~58%), which is expected as most Americans are white.We would also expect people of color to be over-represented in the food stamp recipient group, because POC (excluding asian americans) tend to have lower income than white people. This holds true, as about 75% of americans are white overall, and they represent only about 58% of those that receive food stamps. The 8 levels provided for this variable we find a little strange. There is no category for hispanic/latinx people, as well as overall asian people (only options provided are chinese, filipino, or asian indian, which are nationalities rather than race categories). If these were the options given to respondents, this could have caused some confusion in their answers. 
+These data show that most respondents are white (~58%), which is expected as most Americans are white.We would also expect people of color to be over-represented in the food stamp recipient group, because POC tend to have lower income than white people. This holds true, as about 75% of americans are white overall, and they represent only about 58% of those that receive food stamps. The 8 levels provided for this variable we find a little strange. There is no category for hispanic/latinx people, as well as overall asian people (only options provided are chinese, filipino, or asian indian, which are nationalities rather than race categories). If these were the options given to respondents, this could have caused some confusion in their answers. 
 
 
 
@@ -219,22 +219,28 @@ tally(~RECEIVED_STAMPS, data =nhis_data)
 ```
 All families in this survey population received food stamps which is what we expected as we filtered out for individuals who only received food stamps.
 
-Hypothesis Testing:
+#DRAFT RESULTS
 
-Our primary hypothesis is that of those family participating in the food stamps, they will all have the same level of food security adjusting for all other confounding variables. In other words, that there is no difference between regions and food security level. 
+Food insecurity is a large problem in many different communities across the USA. The government provides federally funded food stamps for those who require it using a program called the Supplemental Nutrition Assistance Program (SNAP). This project will focus on the effectiveness of SNAP, in particular whether or not participating families experience varying levels of food insecurity depending on their region of residence and size of household. Our primary hypothesis is that families participating in SNAP will have equal levels of food security across the different regions of residence,  adjusting for other confounding variables. Our secondary hypothesis is that for families participating in SNAP, level of food security will be lower for those with larger households, adjusting for other confounding variables including region of residence. 
 
-$H_0: \beta_1 =0$
-$H_A: \beta_1\neq0$
- 
-
-##Visualize our data
+##Visualization of primary hypothesis (food security by region)
 ```{r}
 qplot(x=REGION,y=FOOD_SECURITY,data=nhis_data)+geom_jitter()+coord_flip() + labs( x = "Region", y = "Food Security", title = "Food Security Levels among SNAP Participants in the US")
 ```
-##Does this data pass our assumptions?
+
+##Fitted model of primary hypothesis (food security by region)
+
+###Hypothesis Testing:
+
+Our primary hypothesis is that of families participating in SNAP, level of food security will not vary by region, adjusting for other confounding variables. 
+
+$H_0: \beta_1 =0$
+$H_A: \beta_1\neq0$
+
+###Assumptions for logistic regression
 Since the response variable for this study is binary, the logistic equation is automatically linear. Furthermore, the data was collected all across the United States through a survey, therefore this passes the random assumption. Finally, since the individuals who were surveyed did not know each other, the independence assumption was also passed as they would not have influenced each other. 
 
-##Fit a logistic model 
+###Fitting a logistic model 
 ```{r}
 #m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
 m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
@@ -242,3 +248,12 @@ summary(m1)
 ```
 
 Model: $FoodSecurity = 0.849Northeast - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
+
+##Visualization of secondary hypothesis (food security by household size)
+
+##Fitted model of secondary hypothesis (food security by household size)
+
+
+ 
+
+
