@@ -296,7 +296,7 @@ m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
 summary(m1)
 ```
 
-Model: $FoodSecurity = 0.849 - 0.009NorthCentral/Midwest + 0.00437South + 0.073West$
+Model: $FoodSecurity = 0.849 - 0.0089NorthCentral/Midwest + 0.00437South + 0.073West$
 
 According to this model, it is 1% less likely that you will be food secure in the North Central/Midwest region than in the Northeast region.  
 
