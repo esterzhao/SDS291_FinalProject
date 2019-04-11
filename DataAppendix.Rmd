@@ -20,6 +20,7 @@ opts_chunk$set(
 )
 require(magrittr)
 require(tidyverse)
+require(dplyr)
 ```
 
 #Data wrangling
@@ -225,7 +226,32 @@ Food insecurity is a large problem in many different communities across the USA.
 
 ##Visualization of primary hypothesis (food security by region)
 ```{r}
+#scatterplot
 qplot(x=REGION,y=FOOD_SECURITY,data=nhis_data)+geom_jitter()+coord_flip() + labs( x = "Region", y = "Food Security", title = "Food Security Levels among SNAP Participants in the US")
+
+bar_data1 <- nhis_data %>% 
+  filter(FOOD_SECURITY == "Secure") %>% 
+  group_by(REGION) %>% 
+  summarise(num_secure = n())
+
+bar_data2 <- nhis_data %>% 
+  filter(FOOD_SECURITY == "Food Insecure") %>% 
+  group_by(REGION) %>% 
+  summarise(num_insecure = n())
+
+bar_data <- full_join(bar_data1, bar_data2, by = "REGION")
+
+bar_data <- bar_data %>% 
+  mutate(pct_secure = num_secure/(num_secure + num_insecure)) %>% 
+  mutate(pct_insecure = num_insecure/(num_secure + num_insecure))
+
+#bad barchart
+ggplot(data=bar_data, aes(x=REGION, y=pct_secure)) +
+  geom_bar(stat="identity") + 
+  ylim(0,0.8)
+#good barchart needs stacked percentages. format:
+#ggplot(datm,aes(x = REGION, y = percentage???,fill = FOOD_SECURITY)) + 
+    #geom_bar(position = "fill",stat = "identity")
 
 #Create FOOD_SECURITY related variable that groups by region, and creates a percentage of the whole region that identifies as Food Insecure and Food Secure.
 ```
