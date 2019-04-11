@@ -301,8 +301,18 @@ Model: $FoodSecurity = 0.849 - 0.0089NorthCentral/Midwest + 0.00437South + 0.073
 According to this model, it is 1% less likely that you will be food secure in the North Central/Midwest region than in the Northeast region.  
 
 ##Visualization of secondary hypothesis (food security by household size)
+```{r}
+qplot(x=FOOD_SECURITY,y=NUMPREC,data=nhis_data, geom="boxplot") +
+  coord_flip() +
+  labs( x = "Food Security Level", y = "Number of Persons in Household", title = "Food Security Levels among SNAP Participants \n by number of persons in household")
+```
+
 
 ##Fitted model of secondary hypothesis (food security by household size)
+```{r}
+m2<-glm(FOOD_SECURITY ~ NUMPREC, data = nhis_data, family=binomial)
+summary(m2)
+```
 
 
  
