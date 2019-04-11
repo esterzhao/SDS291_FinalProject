@@ -226,6 +226,8 @@ Food insecurity is a large problem in many different communities across the USA.
 ##Visualization of primary hypothesis (food security by region)
 ```{r}
 qplot(x=REGION,y=FOOD_SECURITY,data=nhis_data)+geom_jitter()+coord_flip() + labs( x = "Region", y = "Food Security", title = "Food Security Levels among SNAP Participants in the US")
+
+#Create FOOD_SECURITY related variable that groups by region, and creates a percentage of the whole region that identifies as Food Insecure and Food Secure.
 ```
 
 ##Fitted model of primary hypothesis (food security by region)
