@@ -247,8 +247,8 @@ bar_data <- bar_data %>%
 
 #bad barchart
 ggplot(data=bar_data, aes(x=REGION, y=pct_secure)) +
-  geom_bar(stat="identity") + 
-  ylim(0,0.8)
+  geom_bar(stat="identity") +
+  coord_cartesian(ylim=c(0.5, 0.8))
 #good barchart needs stacked percentages. format:
 #ggplot(datm,aes(x = REGION, y = percentage???,fill = FOOD_SECURITY)) + 
     #geom_bar(position = "fill",stat = "identity")
@@ -310,8 +310,5 @@ qplot(x=FOOD_SECURITY,y=NUMPREC,data=nhis_data, geom="boxplot") +
 m2<-glm(FOOD_SECURITY ~ NUMPREC, data = nhis_data, family=binomial)
 summary(m2)
 ```
-
-
- 
 
 
