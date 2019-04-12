@@ -268,14 +268,11 @@ $H_A: \beta_1\neq0$
 ###Assumptions for logistic regression
 
 ```{r}
-
-nhis_data2 <- nhis_data %>%
-  distinct(NHISPID, .keep_all = TRUE)
-
+nhis_data2 <- nhis_data
 nhis_data2 <- nhis_data2 %>% 
-  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Secure", 0, 1)) %>%
+  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1)) %>%
   group_by(NUMPREC) %>%
-  mutate(binned.y = mean(FOOD_SECURE_NUM))
+  summarize(binned.y = mean(FOOD_SECURE_NUM))
 
 ggplot(nhis_data2, aes(x = NUMPREC, y = logit(binned.y))) + 
   geom_point()
