@@ -268,14 +268,8 @@ $H_A: \beta_1\neq0$
 ###Assumptions for logistic regression
 
 ```{r}
-nhis_data2 <- nhis_data
-nhis_data2 <- nhis_data2 %>% 
-  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1)) %>%
-  group_by(NUMPREC) %>%
-  summarize(binned.y = mean(FOOD_SECURE_NUM))
-
-ggplot(nhis_data2, aes(x = NUMPREC, y = logit(binned.y))) + 
-  geom_point()
+nhis_data2 <- nhis_data %>%
+  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1))
 #linearity doesnt really apply because the x is categorical (no specific order to regions). we would not expect it to be linear becauexpse the regions do not have a linear pattern
 
 #independence is violated. choose a household head. individual covariants apply to whole household. use person #1 as representative. 
@@ -310,5 +304,22 @@ qplot(x=FOOD_SECURITY,y=NUMPREC,data=nhis_data, geom="boxplot") +
 m2<-glm(FOOD_SECURITY ~ NUMPREC, data = nhis_data, family=binomial)
 summary(m2)
 ```
+
+
+###Assumptions for logistic regression (secondary hypothesis)
+```{r}
+nhis_data2 <- nhis_data2 %>%
+  group_by(NUMPREC) %>%
+  summarize(binned.y = mean(FOOD_SECURE_NUM))
+
+ggplot(nhis_data2, aes(x = NUMPREC, y = logit(binned.y))) + 
+  geom_point()
+```
+
+
+
+
+
+
 
 
