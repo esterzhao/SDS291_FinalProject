@@ -282,8 +282,8 @@ Since the response variable for this study is binary, the logistic equation is a
 
 ###Fitting a logistic model 
 ```{r}
-#m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
-m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
+m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
+#m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
 summary(m1)
 ```
 
@@ -301,7 +301,7 @@ qplot(x=FOOD_SECURITY,y=NUMPREC,data=nhis_data, geom="boxplot") +
 
 ##Fitted model of secondary hypothesis (food security by household size)
 ```{r}
-m2<-glm(FOOD_SECURITY ~ NUMPREC, data = nhis_data, family=binomial)
+m2<-glm(FOOD_SECURITY ~ NUMPREC + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data, family=binomial)
 summary(m2)
 ```
 
