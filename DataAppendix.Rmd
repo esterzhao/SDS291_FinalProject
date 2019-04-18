@@ -317,9 +317,3 @@ ggplot(nhis_data2, aes(x = NUMPREC, y = logit(binned.y))) +
 ```
 
 
-
-
-
-
-
-
