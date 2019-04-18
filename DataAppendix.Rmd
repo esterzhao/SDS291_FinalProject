@@ -316,4 +316,16 @@ ggplot(nhis_data2, aes(x = NUMPREC, y = logit(binned.y))) +
   geom_point()
 ```
 
+###Visualization for logistic regressionn
+```{r}
+NUMPREC<- c(0:12)
+logodds<-coef(m2)[1]+ (coef(m2)[2]*NUMPREC)
+m2_data<-as.data.frame(cbind(NUMPREC,logodds))
+m2_newdata<- m2_data%>%
+  mutate(odds=exp(logodds),
+        prob = odds/(1+odds))
+        
+ggplot(m2_newdata, aes(x=NUMPREC,y=logodds)) +geom_point() +geom_smooth(method="lm", se=FALSE)
+```
+
 
