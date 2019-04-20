@@ -325,7 +325,8 @@ m2_newdata<- m2_data%>%
   mutate(odds=exp(logodds),
         prob = odds/(1+odds))
         
-ggplot(m2_newdata, aes(x=NUMPREC,y=logodds)) +geom_point() +geom_smooth(method="lm", se=FALSE)
+ggplot(m2_newdata, aes(x=NUMPREC,y=prob)) +geom_point() +geom_smooth(method="lm", se=FALSE) +
+  labs(x = "Num. of persons in household", y = "Probability of being food secure", title = "Probability of food security by household size of SNAP participants")
 ```
 
 
