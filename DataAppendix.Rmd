@@ -330,4 +330,4 @@ ggplot(m2_newdata, aes(x=NUMPREC,y=prob)) +geom_point() +geom_smooth(method="lm"
   labs(x = "Num. of persons in household", y = "Probability of being food secure", title = "Probability of food security by household size of SNAP participants")
 ```
 
-
+!!!!
