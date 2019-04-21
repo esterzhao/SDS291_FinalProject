@@ -316,7 +316,7 @@ nhis_data2 <- nhis_data2 %>%
   summarize(binned.y = mean(FOOD_SECURE_NUM)) 
 
 nhis_data2 <- nhis_data2 %>%
-  mutate(NUMPREC2 = NUMPREC^2)
+  mutate(NUMPREC2 = NUMPREC^3)
 
 ggplot(nhis_data2, aes(x = NUMPREC2, y = logit(binned.y))) + 
   geom_point()
