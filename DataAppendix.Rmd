@@ -269,8 +269,8 @@ $H_A: \beta_1\neq0$
 ###Assumptions for logistic regression
 
 ```{r}
-nhis_data2 <- nhis_data %>%
-  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1))
+#nhis_data2 <- nhis_data %>%
+  #mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1))
 #linearity doesnt really apply because the x is categorical (no specific order to regions). we would not expect it to be linear because the regions do not have a linear pattern
 
 
@@ -311,12 +311,16 @@ summary(m2)
 
 ###Assumptions for logistic regression (secondary hypothesis)
 ```{r}
-nhis_data2 <- nhis_data2 %>%
-  group_by(NUMPREC) %>%
-  summarize(binned.y = mean(FOOD_SECURE_NUM)) 
+#nhis_data2 <- nhis_data2 %>%
+  #group_by(NUMPREC) %>%
+  #summarize(binned.y = mean(FOOD_SECURE_NUM)) 
 
 nhis_data2 <- nhis_data2 %>%
   mutate(NUMPREC2 = NUMPREC^3)
+
+m3<-glm(FOOD_SECURITY ~ NUMPREC2 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
+summary(m3)
+summary(m2)
 
 ggplot(nhis_data2, aes(x = NUMPREC2, y = logit(binned.y))) + 
   geom_point()
