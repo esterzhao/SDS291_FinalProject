@@ -269,8 +269,8 @@ $H_A: \beta_1\neq0$
 ###Assumptions for logistic regression
 
 ```{r}
-#nhis_data2 <- nhis_data %>%
-  #mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1))
+nhis_data2 <- nhis_data %>%
+  mutate(FOOD_SECURE_NUM=if_else(FOOD_SECURITY=="Food Insecure", 0, 1))
 #linearity doesnt really apply because the x is categorical (no specific order to regions). we would not expect it to be linear because the regions do not have a linear pattern
 
 
@@ -286,7 +286,7 @@ Since the response variable for this study is binary, the logistic equation is a
 ###Fitting a logistic model 
 ```{r}
 m1<-glm(FOOD_SECURITY ~ REGION  + AGE + NCHILD + NUMPREC + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data=nhis_data, family=binomial)
-#m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
+m1<-glm(FOOD_SECURITY ~ REGION, data = nhis_data, family=binomial)
 summary(m1)
 ```
 
@@ -311,16 +311,19 @@ summary(m2)
 
 ###Assumptions for logistic regression (secondary hypothesis)
 ```{r}
-#nhis_data2 <- nhis_data2 %>%
-  #group_by(NUMPREC) %>%
-  #summarize(binned.y = mean(FOOD_SECURE_NUM)) 
+nhis_data2 <- nhis_data2 %>%
+  group_by(NUMPREC) %>%
+  summarize(binned.y = mean(FOOD_SECURE_NUM)) 
 
 nhis_data2 <- nhis_data2 %>%
-  mutate(NUMPREC2 = NUMPREC^3)
+  mutate(NUMPREC3 = NUMPREC^3, NUMPREC2 = NUMPREC^2)
 
-m3<-glm(FOOD_SECURITY ~ NUMPREC2 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
+m3<-glm(FOOD_SECURITY ~ NUMPREC + NUMPREC2 + NUMPREC3 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
 summary(m3)
-summary(m2)
+#fitted equation
+#beta prime x for beta notation
+#
+summary(m3)
 
 ggplot(nhis_data2, aes(x = NUMPREC2, y = logit(binned.y))) + 
   geom_point()
