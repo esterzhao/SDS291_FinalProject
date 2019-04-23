@@ -311,9 +311,7 @@ summary(m2)
 
 ###Assumptions for logistic regression (secondary hypothesis)
 ```{r}
-nhis_data2 <- nhis_data2 %>%
-  group_by(NUMPREC) %>%
-  summarize(binned.y = mean(FOOD_SECURE_NUM)) 
+nhis_data2 <- nhis_data2  %>%group_by(NUMPREC) %>% mutate(binned.y = mean(FOOD_SECURE_NUM)) 
 
 nhis_data2 <- nhis_data2 %>%
   mutate(NUMPREC3 = NUMPREC^3, NUMPREC2 = NUMPREC^2)
@@ -337,3 +335,11 @@ m2_newdata<- m2_data%>%
 ggplot(m2_newdata, aes(x=NUMPREC,y=prob)) +geom_point() +geom_smooth(method="lm", se=FALSE) +
   labs(x = "Num. of persons in household", y = "Probability of being food secure", title = "Probability of food security by household size of SNAP participants")
 ```
+
+
+## Testing models: 
+```{r}
+anova(m3,m2, test = "Chisq")
+
+```
+
