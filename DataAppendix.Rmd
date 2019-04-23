@@ -314,10 +314,14 @@ summary(m2)
 nhis_data2 <- nhis_data2  %>%group_by(NUMPREC) %>% mutate(binned.y = mean(FOOD_SECURE_NUM)) 
 
 nhis_data2 <- nhis_data2 %>%
-  mutate(NUMPREC3 = NUMPREC^3, NUMPREC2 = NUMPREC^2)
+  mutate(NUMPREC3 = NUMPREC^3, NUMPREC2 = NUMPREC^2, NUMPREC4 = NUMPREC^4, NUMPREC5 = NUMPREC^5)
 
 m3<-glm(FOOD_SECURITY ~ NUMPREC + NUMPREC2 + NUMPREC3 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
 summary(m3)
+
+m4 <- glm(FOOD_SECURITY ~ NUMPREC + NUMPREC2 + NUMPREC3 + NUMPREC4 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
+
+m5 <-glm(FOOD_SECURITY ~ NUMPREC + NUMPREC2 + NUMPREC3 + NUMPREC4 + NUMPREC5 + REGION + AGE + NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
 
 ggplot(nhis_data2, aes(x = NUMPREC2, y = logit(binned.y))) + 
   geom_point()
@@ -338,8 +342,53 @@ ggplot(m2_newdata, aes(x=NUMPREC,y=prob)) +geom_point() +geom_smooth(method="lm"
 
 
 ## Testing models: 
+#Null Hypothesis: 
+$H_\theta$ = $B_2 = B_3 = 0$
+$H_A$ =  Atleast one $B_i \neq 0$
 ```{r}
-anova(m3,m2, test = "Chisq")
-
+anova(m2,m3, test = "Chisq")
 ```
 
+We reject the null hypothesis as the test statistic is 33.32, which is greater than our critical value of 5.991 for 2 degrees of freedom. Therefore, either the numprec2 or the numprec3 differs from zero. Thus, the full model does a statistically significant better job at predicting food security, which is furthered supported given that the p-value is less than the significance level of 0.05.  
+
+
+#Testing the squared version to see which one adds more information
+
+##Testing the squared term:
+$H_\theta$ = $B_2  = 0$
+$H_A$ =  $B_2 \neq 0$
+```{r}
+msquared <- glm(FOOD_SECURITY ~ NUMPREC + NUMPREC2 +  REGION + AGE + 
+    NCHILD + FAMOLDNO + HEALTH_ISSUES + RACE + EDUCATION + FAM_INCOME, data = nhis_data2, family=binomial)
+
+anova(m2,msquared, test = "Chisq")
+```
+
+We reject the null hypothesis as the test statistic is 27.682, which is greater than our critical value of 3.84 for 1 degree of freedom. Therefore, numprec2  differs from zero. Thus, the full model does a statistically significant better job at predicting food security, which is furthered supported given that the p-value is less than the significance level of 0.05.  
+
+##Testing the cubic variables:
+$H_\theta$ = $B_3 = 0$
+$H_A$ =  $B_3 \neq 0$
+
+```{r}
+anova(msquared,m3, test = "Chisq")
+```
+We reject the null hypothesis as the test statistic is 5.6575 which is greater than our critical value of 3.84 for 1 degree of freedom. Therefore, numprec3 differs from zero. Thus, the full model does a statistically significant better job at predicting food security, which is furthered supported given that the p-value is less than the significance level of 0.05. Meaning that this term should be added to the equation. 
+
+##Testing the ^4: 
+$H_\theta$ = $B_4 = 0$
+$H_A$ =  $B_4 \neq 0$
+```{r}
+anova(m3,m4, test = "Chisq")
+```
+We reject the null hypothesis as the test statistic is 12.275 which is greater than our critical value of 3.84 for 1 degree of freedom. Therefore, numprec4 differs from zero. Thus, the full model does a statistically significant better job at predicting food security, which is furthered supported given that the p-value is less than the significance level of 0.05. Meaning that this term should be added to the equation. 
+
+
+##Testing the ^5:
+$H_\theta$ = $B_5 = 0$
+$H_A$ =  $B_5 \neq 0$
+```{r}
+anova(m4,m5, test = "Chisq")
+```
+
+We fail to reject the null hypothesis as the test statistic is, 2.2946, which is less than our critical value of 3.84. Therefore, we do not have enough information to say that numprec4 differs from zero. Additionally, since the p-value (0.1298) is greater than the significance level of 0.05,  that this term should not be added to the equation. 
