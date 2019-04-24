@@ -21,6 +21,8 @@ opts_chunk$set(
 require(magrittr)
 require(tidyverse)
 require(dplyr)
+#install.packages("stargazer")
+library(stargazer)
 ```
 
 #Data wrangling
@@ -392,3 +394,9 @@ anova(m4,m5, test = "Chisq")
 ```
 
 We fail to reject the null hypothesis as the test statistic is, 2.2946, which is less than our critical value of 3.84. Therefore, we do not have enough information to say that numprec4 differs from zero. Additionally, since the p-value (0.1298) is greater than the significance level of 0.05,  that this term should not be added to the equation. 
+
+
+```{r}
+stargazer(m2, m3, m4, title="Results", align=TRUE)
+```
+
