@@ -23,7 +23,7 @@ opts_chunk$set(
 require(magrittr)
 require(tidyverse)
 require(dplyr)
-#install.packages("stargazer")
+#install.packages("dcolumn")
 library(stargazer)
 ```
 
