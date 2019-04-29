@@ -401,4 +401,11 @@ We fail to reject the null hypothesis as the test statistic is, 2.2946, which is
 ```{r, results="asis"}
 stargazer(m2, m3, m4,m5, type="html")
 ```
+```{r}
+nhis_data2 %>% 
+  group_by(FOOD_SECURITY) %>% 
+  summarise(N = n()) %>% 
+  mutate(proportion = N/sum(N))
+  
+```
 
