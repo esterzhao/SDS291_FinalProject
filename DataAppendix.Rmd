@@ -397,10 +397,12 @@ anova(m4,m5, test = "Chisq")
 
 We fail to reject the null hypothesis as the test statistic is, 2.2946, which is less than our critical value of 3.84. Therefore, we do not have enough information to say that numprec4 differs from zero. Additionally, since the p-value (0.1298) is greater than the significance level of 0.05,  that this term should not be added to the equation. 
 
-
+#Creating a formatting table to compare the different models
 ```{r, results="asis"}
 stargazer(m2, m3, m4,m5, type="html")
 ```
+
+#Calculating the proportion of people in the varying levels of food security
 ```{r}
 nhis_data2 %>% 
   group_by(FOOD_SECURITY) %>% 
