@@ -65,7 +65,7 @@ nhis_data<-nhis_data %>%
 
 
 ```{r, message=FALSE}
-#Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 3 levels: Secure (0-2), Low Food Security(3-5), Very Low Food Security (6-10). 
+#Convert FSRAWSCORE into a categorical variable, called FoodSecurity, with 2 levels: Secure (0-2), and insecure (3-10)
 
 #FSRAWSCORE Codes: 
 
